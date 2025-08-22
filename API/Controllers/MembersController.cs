@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [Authorize]
+    // [Authorize]
         //localhost:5000/api/members
     public class MembersController(AppDBContext context) : BaseApiController
     {

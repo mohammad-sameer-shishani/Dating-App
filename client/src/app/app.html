@@ -1,13 +1,2 @@
-<div class="card bg-base-100 lg:w-1/2  sm:w-10/12  mx-auto p-10 mt-10 shadow-xl">
-    <h1 class="text-red-500 text-3xl">{{title()}}</h1>
-        <ul class="list">
-            @for (member of members(); track member.id) {
-                <li class="list-row items-center">
-                    <img src="/user.jpg" alt="user avatar" class="size-12 rounded-box">
-                    <div>{{member.displayName}}</div>
-
-                </li>
-            }
-        </ul>
-    <button class="btn btn-primary">progress</button>
-</div>
+<app-nav/>
+<app-home />
