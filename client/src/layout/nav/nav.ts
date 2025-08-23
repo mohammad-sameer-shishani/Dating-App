@@ -1,30 +1,36 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountServices } from '../../core/services/account-services';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ToastService } from '../../core/services/toast-service';
 
 @Component({
   selector: 'app-nav',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './nav.html',
   styleUrl: './nav.css'
 })
 export class Nav {
   protected accountService = inject(AccountServices);
+  private router= inject(Router);
+  private toast= inject(ToastService);
   protected creds: any = {}
   login(){
     this.accountService.login(this.creds).subscribe({
-      next: response => {
-        console.log('Login successful', response);
+      next: () => {
+        this.router.navigateByUrl('/members');
+        this.toast.success('Logged in successfully!');
         this.creds = {}; // Clear credentials after successful login
       },
       error: error => {
-        alert('Login failed: ' + error.message);
+        this.toast.error(error.error);
       }
     });
   }
   logout() {
     this.accountService.logout();
     this.creds = {}; // Clear credentials on logout
-    console.log('Logged out');
+    this.router.navigateByUrl('/'); // Redirect to home or login page after logout
+    this.toast.info('Logged out successfully.');
   }
 }
