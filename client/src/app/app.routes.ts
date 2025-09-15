@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { MemberList } from '../fearures/members/member-list/member-list';
-import { MemberDetailed } from '../fearures/members/member-detailed/member-detailed';
+import { MemberList } from '../features/members/member-list/member-list';
+import { MemberDetailed } from '../features/members/member-detailed/member-detailed';
 import { Home } from '../features/home/home';
-import { Lists } from '../fearures/lists/lists';
-import { Messages } from '../fearures/messages/messages';
+import { Lists } from '../features/lists/lists';
+import { Messages } from '../features/messages/messages';
 import { authGuard } from '../core/guards/auth-guard';
 import { TestErrors } from '../features/test-errors/test-errors';
 import { NotFound } from '../shared/errors/not-found/not-found';
