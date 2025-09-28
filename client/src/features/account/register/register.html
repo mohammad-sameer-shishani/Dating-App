@@ -1,24 +1,109 @@
 <div class="card bg-base-100 w-1/2 mx-auto flex flex-col p-6 rounded-lg shadow-lg">
     <div class="card-title justify-center text-3xl text-primary pb-6">Sign up</div>
-    <div>
-        <form #reisterForm="ngForm" class="flex flex-col gap-4 w-full" (ngSubmit)="register()">
+    <div class="card-body w-full">
+        <ul class="steps">
+            <li class="step step-primary">Credentials</li>
+            <li class="step" [class.step-primary]="currentStep()===2">Profile</li>
+        </ul>
+
+        @if (currentStep() === 1) {
+            <form [formGroup]="credentialsForm" class="flex flex-col gap-4 w-full steps">
+            
+            <app-text-input label="Email" formControlName="email" class="mt-2"/>
+            <app-text-input label="Display Name" formControlName="displayName" />
+            <app-text-input label="Password" formControlName="password" type="password"/>
+            <app-text-input label="Confirm Password" formControlName="confirmPassword" type="password"/>
+           
+            <div class="flex items-center justify-end gap-3">
+                <button 
+                class="btn" 
+                (click)="cancel()" 
+                type="button">Cancel</button>
+
+                <button 
+                class="btn btn-primary" 
+                [disabled]="!credentialsForm.valid" 
+                type="button"
+                (click)="nextStep()">Next</button>
+            </div>
+
+        </form>
+        }
+        @if (currentStep() === 2) {
+            <form [formGroup]="profileForm" class="flex flex-col gap-4 w-full steps">
+                <div class="flex items-center gap-4">
+                    <div class="font-semibold">Gender: </div>
+                    <label class="flex gap-3 items-center">
+                        <span>Male</span>
+                        <input 
+                        type="radio" 
+                        class="radio radio-primary" 
+                        formControlName="gender" 
+                        value="male">
+                    </label>
+                    <label class="flex gap-3 items-center">
+                        <span>Female</span>
+                        <input 
+                        type="radio" 
+                        class="radio radio-primary" 
+                        formControlName="gender" 
+                        value="female">
+                    </label>
+                </div>
+                <app-text-input 
+                [maxDate]="getMaxDate()" 
+                label="Date of Birth" 
+                formControlName="dateOfBirth" 
+                type="date"/>
+                <app-text-input label="Country" formControlName="country"/>
+                <app-text-input label="City" formControlName="city"/>
+                <div class="flex items-center justify-end gap-3">
+                    <button 
+                    class="btn" 
+                    (click)="prevStep()" 
+                    type="button">Back</button>
+
+                    <button 
+                    class="btn btn-primary" 
+                    [disabled]="!credentialsForm.valid" 
+                    type="button"
+                    (click)="register()">Register</button>
+                </div>
+            </form>
+        }
+        <!-- <form #reisterForm="ngForm" class="flex flex-col gap-4 w-full" (ngSubmit)="register()">
             <input type="text" name="email" class="input w-full" 
                 [(ngModel)]="creds.email" placeholder="Email" required />
             <input type="text" name="email" class="input w-full" 
                 [(ngModel)]="creds.displayName" placeholder="Display Name" required />
             <input type="password" name="password" class="input w-full" 
                 [(ngModel)]="creds.password" placeholder="Password" required />
-            <!-- <select class="select w-full">
+             <select class="select w-full">
                 <option disabled selected>Pick a member</option> 
                 @for (member of membersFromHome(); track $index) {
                 <option value="{{member.id}}">{{member.displayName}}</option>
                 } 
-            </select>     -->
+            </select>    
             <div class="flex items-center justify-end gap-3">
                 <button class="btn" (click)="cancel()" type="button">Cancel</button>
                 <button class="btn btn-primary" type="submit">Register</button>
             </div>
 
-        </form>
+        </form> -->
     </div>
+   @if (validationErrors().length>0) {
+    <div class="mt-5 flex bg-gray-200 rounded-2xl w-1/2 p-3 mx-auto">
+        <ul class="flex flex-col text-error space-y-1">
+            @for (error of validationErrors(); track $index) {
+               <li>{{error}}</li>
+            }
+        </ul>
+    </div>
+   }
+    <!-- <div class="flex items-start px-3 flex-col w-full mockup-code text-md">
+        <div>credentials value: {{credentialsForm.value | json}}</div>
+        <div>credentials status: {{credentialsForm.status | json}}</div>
+        <div>profile value: {{profileForm.value | json}}</div>
+        <div>profile status: {{profileForm.status | json}}</div>
+    </div> -->
 </div>

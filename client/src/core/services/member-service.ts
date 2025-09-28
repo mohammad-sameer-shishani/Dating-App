@@ -26,22 +26,23 @@ export class MemberService {
   }
 
   getMemberPhotos(id: string) {
-    return this.http.get<Photo[]>(this.baseUrl+'members/'+id+'/photos' ); //, this.getHttpOptions()
+    return this.http.get<Photo[]>(this.baseUrl+'members/'+id+'/photos' ); 
   }
   
   updateMember(member: EditableMember) {
-    return this.http.put(this.baseUrl+'members', member ); //, this.getHttpOptions()
+    return this.http.put(this.baseUrl+'members', member ); 
   }
 
   uploadPhoto(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<Photo>(this.baseUrl+'members/add-photo', formData ); //, this.getHttpOptions()
+    return this.http.post<Photo>(this.baseUrl+'members/add-photo', formData ); 
   }
 
   setMainPhoto(photo: Photo) {
-    return this.http.put(this.baseUrl+'members/set-main-photo/'+photo.id, {} ); //, this.getHttpOptions()
+    return this.http.put(this.baseUrl+'members/set-main-photo/'+photo.id, {} ); 
   }
+  
   deletePhoto(photoId: number){
     return this.http.delete(this.baseUrl+'members/delete-photo/'+photoId);
   }

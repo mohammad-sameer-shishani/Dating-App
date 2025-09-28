@@ -20,6 +20,20 @@ export class MemberPhotos implements OnInit {
  private route = inject(ActivatedRoute);
  protected photos=signal<Photo[]>([]);
  protected loading=signal(false);
+ 
+ ngOnInit(): void {
+   const memberId=this.route.parent?.snapshot.paramMap.get('id');
+ if (memberId){
+   this.memberService.getMemberPhotos(memberId).subscribe({
+     next: photos => {
+       this.photos.set(photos);
+     },
+     error: err => {
+       console.error('Error fetching photos:', err);
+     }
+   });
+ }
+ }
 
 onUploadImage(file: File) {
   this.loading.set(true);
@@ -28,6 +42,9 @@ onUploadImage(file: File) {
       this.memberService.editMode.set(false);
       this.loading.set(false);
       this.photos.update(photos => [...photos, photo]);
+      if (!this.memberService.member()?.imageUrl) {
+        this.setMainLocalPhoto(photo);
+      }
     },
     error: err => {
       console.error('Error uploading photo:', err);
@@ -35,30 +52,11 @@ onUploadImage(file: File) {
     }
   });
 }
-  ngOnInit(): void {
-    const memberId=this.route.parent?.snapshot.paramMap.get('id');
-  if (memberId){
-    this.memberService.getMemberPhotos(memberId).subscribe({
-      next: photos => {
-        this.photos.set(photos);
-      },
-      error: err => {
-        console.error('Error fetching photos:', err);
-      }
-    });
-  }
-  }
   setMainPhoto(photo: Photo) {
     this.loading.set(true);
     this.memberService.setMainPhoto(photo).subscribe({
       next: () => {
-        const currentUser = this.accountService.currentUser();
-        if (currentUser) {
-          currentUser.imageUrl = photo.url;
-          this.accountService.setCurrentUser(currentUser as User);
-          this.memberService.member.update(member => 
-            ({...member, imageUrl:photo.url}) as Member)
-        }
+       this.setMainLocalPhoto(photo);
       }
     });
   }
@@ -67,5 +65,15 @@ onUploadImage(file: File) {
       next : ()=>
         this.photos.update(photos => photos.filter(x=>x.id !== photoId))
     })
+  }
+
+  private setMainLocalPhoto(photo: Photo) {
+     const currentUser = this.accountService.currentUser();
+        if (currentUser) {
+          currentUser.imageUrl = photo.url;
+          this.accountService.setCurrentUser(currentUser as User);
+          this.memberService.member.update(member => 
+            ({...member, imageUrl:photo.url}) as Member)
+        }
   }
 }

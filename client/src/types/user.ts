@@ -15,4 +15,8 @@ export type RegisterCreds = {
     email: string; // Username for login
     displayName: string; // Display name for the user
     password: string; // Password for login
+    gender: string;
+    dateOfBirth:string;
+    city: string;
+    country: string;
 }

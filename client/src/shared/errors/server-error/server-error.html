@@ -3,6 +3,6 @@
     <p class="card-body text-xl text-center ">{{error.message}}</p>
     <button class="btn btn-primary mb-10" (click)="detailsToggle()">Details</button>
     @if (showDetails) {
-        <div>{{error.details}}</div>
+        <div class="overflow-y-auto h-[35vh]">{{error.details}}</div>
     }
 </div>  
